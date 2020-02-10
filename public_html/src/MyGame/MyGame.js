@@ -13,8 +13,10 @@
 
 function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
-    this.kBg = "assets/bg.png";
+		this.kBg = "assets/bg.png";
+
     this.kMineUnopened = "assets/mine_unopened.png";
+    this.mMineUnopened = null;
 
     // The camera to view the scene
     this.mCamera = null;
@@ -25,7 +27,6 @@ function MyGame() {
     // the hero and the support objects
     this.mHero = null;
     this.mBrain = null;
-    this.mPortal = null;
     this.mLMinion = null;
     this.mRMinion = null;
     this.mFocusObj = null;
@@ -36,22 +37,24 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
+		gEngine.Textures.loadTexture(this.kBg);
+
     gEngine.Textures.loadTexture(this.kMineUnopened);
-    gEngine.Textures.loadTexture(this.kBg);
 };
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
+		gEngine.Textures.unloadTexture(this.kBg);
+
     gEngine.Textures.unloadTexture(this.kMineUnopened);
-    gEngine.Textures.unloadTexture(this.kBg);
 };
 
 MyGame.prototype.initialize = function () {
     // Step A: set up the cameras
     this.mCamera = new Camera(
-        vec2.fromValues(50, 36), // position of the camera
+        vec2.fromValues(50, 50), // position of the camera
         100,                       // width of camera
-        [0, 0, 640, 330]           // viewport (orgX, orgY, width, height)
+        [0, 0, 640, 640]           // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // Large background image
@@ -63,10 +66,12 @@ MyGame.prototype.initialize = function () {
 
     // Objects in the scene
     this.mHero = new Hero(this.kMinionSprite);
-    this.mPortal = new TextureObject(this.kMineUnopened, 50, 30, 10, 10);
     this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
     this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
     this.mFocusObj = this.mHero;
+		
+		this.mMineUnopened = new TextureObject(this.kMineUnopened, 5, 5, 10, 10);
+		
 
     this.mMsg = new FontRenderable("Status Message");
     this.mMsg.setColor([1, 1, 1, 1]);
@@ -79,7 +84,7 @@ MyGame.prototype.drawCamera = function (camera) {
     camera.setupViewProjection();
     this.mBg.draw(camera);
     this.mHero.draw(camera);
-    this.mPortal.draw(camera);
+    this.mMineUnopened.draw(camera);
     this.mLMinion.draw(camera);
     this.mRMinion.draw(camera);
 };
@@ -107,7 +112,7 @@ MyGame.prototype.update = function () {
     this.mRMinion.update();
 
     this.mHero.update();     // for WASD movement
-    this.mPortal.update(     // for arrow movement
+    this.mMineUnopened.update(     // for arrow movement
         gEngine.Input.keys.Up,
         gEngine.Input.keys.Down,
         gEngine.Input.keys.Left,
