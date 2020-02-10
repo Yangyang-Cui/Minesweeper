@@ -13,8 +13,8 @@
 
 function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
-    this.kMinionPortal = "assets/minion_portal.png";
     this.kBg = "assets/bg.png";
+    this.kMineUnopened = "assets/mine_unopened.png";
 
     // The camera to view the scene
     this.mCamera = null;
@@ -36,13 +36,13 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
-    gEngine.Textures.loadTexture(this.kMinionPortal);
+    gEngine.Textures.loadTexture(this.kMineUnopened);
     gEngine.Textures.loadTexture(this.kBg);
 };
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
-    gEngine.Textures.unloadTexture(this.kMinionPortal);
+    gEngine.Textures.unloadTexture(this.kMineUnopened);
     gEngine.Textures.unloadTexture(this.kBg);
 };
 
@@ -63,7 +63,7 @@ MyGame.prototype.initialize = function () {
 
     // Objects in the scene
     this.mHero = new Hero(this.kMinionSprite);
-    this.mPortal = new TextureObject(this.kMinionPortal, 50, 30, 10, 10);
+    this.mPortal = new TextureObject(this.kMineUnopened, 50, 30, 10, 10);
     this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
     this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
     this.mFocusObj = this.mHero;
