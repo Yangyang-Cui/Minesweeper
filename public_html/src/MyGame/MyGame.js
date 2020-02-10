@@ -69,24 +69,46 @@ MyGame.prototype.initialize = function () {
     this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
     this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
     this.mFocusObj = this.mHero;
-		
-		this.mMineUnopened = new TextureObject(this.kMineUnopened, 5, 5, 10, 10);
-		
 
     this.mMsg = new FontRenderable("Status Message");
     this.mMsg.setColor([1, 1, 1, 1]);
     this.mMsg.getXform().setPosition(1, 14);
-    this.mMsg.setTextHeight(3);
+		this.mMsg.setTextHeight(3);
+
+		// ^_^
+		this.mMineUnopened = new TextureObject(this.kMineUnopened, 5 , 5 , 10, 10);
+		this.mMineUnopened2 = new TextureObject(this.kMineUnopened, 15 , 5 , 10, 10);
+
+			
+		this.mMineUnopenedSet = [];
+		var i, j, boardSize;
+		boardSize = 100;
+		for (i = 5; i < boardSize; i+=10) {
+			for (j = 5; j < boardSize; j+=10) {
+				this.mMineUnopened = new TextureObject(this.kMineUnopened, i , j , 10, 10);
+				this.mMineUnopenedSet.push(this.mMineUnopened);
+			}
+		}
+		
+
 };
 
 
 MyGame.prototype.drawCamera = function (camera) {
     camera.setupViewProjection();
     this.mBg.draw(camera);
-    this.mHero.draw(camera);
-    this.mMineUnopened.draw(camera);
+		this.mHero.draw(camera);
+
     this.mLMinion.draw(camera);
-    this.mRMinion.draw(camera);
+		this.mRMinion.draw(camera);
+		
+		// ^_^
+		this.mMineUnopened.draw(camera);
+		this.mMineUnopened2.draw(camera);
+		for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
+			this.mMineUnopenedSet[i].draw(camera);
+		}
+
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
