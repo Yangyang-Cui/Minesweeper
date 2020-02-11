@@ -15,7 +15,7 @@ function MyGame() {
 	this.kMinionSprite = "assets/minion_sprite.png";
 	this.kBg = "assets/bg.png";
 
-	this.kMineUnopened = "assets/mine_unopened.png";
+	this.kMineUnopened = "assets/bgd.png";
 	this.mMineUnopened = null;
 
 	// The camera to view the scene

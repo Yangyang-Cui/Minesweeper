@@ -30,8 +30,12 @@ gEngine.Core = (function () {
         mGL.enable(mGL.BLEND);
 
         // Set images to flip y axis to match the texture coordinate space.
-        mGL.pixelStorei(mGL.UNPACK_FLIP_Y_WEBGL, true);
-
+				mGL.pixelStorei(mGL.UNPACK_FLIP_Y_WEBGL, true);
+				
+				canvas.addEventListener('contextmenu', (event) => {
+					event.preventDefault()
+				});
+				
         if (mGL === null) {
             document.write("<br><b>WebGL is not supported!</b>");
             return;
