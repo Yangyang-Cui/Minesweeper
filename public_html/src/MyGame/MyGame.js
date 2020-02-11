@@ -12,40 +12,21 @@
 "use strict"; // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
-	// this.kMinionSprite = "assets/minion_sprite.png";
-	// this.kBg = "assets/bg.png";
-
 	this.kMineUnopened = "assets/bgd.png";
 	this.mMineUnopened = null;
 
 	// The camera to view the scene
 	this.mCamera = null;
-	// this.mBg = null;
 
 	this.mMsg = null;
-
-	// the hero and the support objects
-	// this.mHero = null;
-	// this.mBrain = null;
-	// this.mLMinion = null;
-	// this.mRMinion = null;
-	// this.mFocusObj = null;
-
-	this.mChoice = 'D';
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
-	// gEngine.Textures.loadTexture(this.kMinionSprite);
-	// gEngine.Textures.loadTexture(this.kBg);
-
 	gEngine.Textures.loadTexture(this.kMineUnopened);
 };
 
 MyGame.prototype.unloadScene = function () {
-	// gEngine.Textures.unloadTexture(this.kMinionSprite);
-	// gEngine.Textures.unloadTexture(this.kBg);
-
 	gEngine.Textures.unloadTexture(this.kMineUnopened);
 };
 
@@ -57,18 +38,6 @@ MyGame.prototype.initialize = function () {
 		[0, 0, 640, 640] // viewport (orgX, orgY, width, height)
 	);
 	this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
-	// Large background image
-	// var bgR = new SpriteRenderable(this.kBg);
-	// bgR.setElementPixelPositions(0, 1024, 0, 1024);
-	// bgR.getXform().setSize(150, 150);
-	// bgR.getXform().setPosition(50, 35);
-	// this.mBg = new GameObject(bgR);
-
-	// Objects in the scene
-	// this.mHero = new Hero(this.kMinionSprite);
-	// this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
-	// this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
-	// this.mFocusObj = this.mHero;
 
 	this.mMsg = new FontRenderable("Status Message");
 	this.mMsg.setColor([1, 1, 1, 1]);
@@ -95,12 +64,6 @@ MyGame.prototype.initialize = function () {
 
 MyGame.prototype.drawCamera = function (camera) {
 	camera.setupViewProjection();
-	// this.mBg.draw(camera);
-	// this.mHero.draw(camera);
-
-	// this.mLMinion.draw(camera);
-	// this.mRMinion.draw(camera);
-
 	// ^_^ --
 	// this.mMineUnopened.draw(camera);
 	// this.mMineUnopened2.draw(camera);
@@ -124,15 +87,10 @@ MyGame.prototype.draw = function () {
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
-	var zoomDelta = 0.05;
 	var msg = "L/R: Left or Right Minion; H: Dye; P: Portal]: ";
 
 	this.mCamera.update(); // for smoother camera movements
 
-	// this.mLMinion.update(); // for sprite animation
-	// this.mRMinion.update();
-
-	// this.mHero.update(); // for WASD movement
 	this.mMineUnopened.update( // for arrow movement
 		gEngine.Input.keys.Up,
 		gEngine.Input.keys.Down,
