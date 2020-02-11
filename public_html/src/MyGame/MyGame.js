@@ -42,7 +42,7 @@ MyGame.prototype.initialize = function () {
 	this.mMsg = new FontRenderable("Status Message");
 	this.mMsg.setColor([0, 0, 0, 1]);
 	this.mMsg.getXform().setPosition(20, 40);
-	this.mMsg.setTextHeight(3);
+	this.mMsg.setTextHeight(5);
 
 	// ^_^ --
 	// this.mMineUnopened = new TextureObject(this.kMineUnopened, 5 , 5 , 10, 10);
