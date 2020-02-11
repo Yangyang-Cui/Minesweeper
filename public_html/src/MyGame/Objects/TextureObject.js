@@ -21,18 +21,5 @@ function TextureObject(texture, x, y, w, h) {
 }
 gEngine.Core.inheritPrototype(TextureObject, GameObject);
 
-TextureObject.prototype.update = function (up, down, left, right) {
-    var xform = this.getXform();
-    if (gEngine.Input.isKeyPressed(up)) {
-        xform.incYPosBy(this.kDelta);
-    }
-    if (gEngine.Input.isKeyPressed(down)) {
-        xform.incYPosBy(-this.kDelta);
-    }
-    if (gEngine.Input.isKeyPressed(left)) {
-        xform.incXPosBy(-this.kDelta);
-    }
-    if (gEngine.Input.isKeyPressed(right)) {
-        xform.incXPosBy(this.kDelta);
-    }
-};
+TextureObject.prototype.update = function () {
+}
