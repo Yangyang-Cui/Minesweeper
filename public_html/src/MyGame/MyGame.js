@@ -20,10 +20,16 @@ function MyGame() {
 	this.mMineRed = null;
 	this.kMineGray = "assets/mine_gray.jpg";
 	this.mMineGray = null;
+	this.boardSize = 10;
+
+	// set will be array
+	this.mBgdSet = null;
+	this.mMineUnopenedSet = null;
+	this.mMineGraySet = null;
 
 	// The camera to view the scene
 	this.mCamera = null;
-
+	// message will be number
 	this.mMsg = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -59,13 +65,14 @@ MyGame.prototype.initialize = function () {
 	// ^_^ --
 	// this.mMineUnopened = new TextureObject(this.kMineUnopened, 5 , 5 , 10, 10);
 	// this.mMineUnopened2 = new TextureObject(this.kMineUnopened, 15 , 5 , 10, 10);
-
+	this.mBgdSet = [];
 	this.mMineUnopenedSet = [];
-	var i, j, boardSize;
-	boardSize = 100;
-	for (i = 5; i < boardSize; i += 10) {
-		for (j = 5; j < boardSize; j += 10) {
-			this.mMineUnopened = new TextureObject(this.kMineUnopened, i, j, 10, 10);
+	this.mMineGraySet = [];
+
+	this.boardSize = this.boardSize * this.boardSize - 5;
+	for (let row = 5; row <= this.boardSize; row+= 10) {
+		for (let column = 5; column <= this.boardSize; column+= 10) {
+			this.mMineUnopened = new TextureObject(this.kMineUnopened, row, column, 10, 10);
 			this.mMineUnopenedSet.push(this.mMineUnopened);
 		}
 	}
