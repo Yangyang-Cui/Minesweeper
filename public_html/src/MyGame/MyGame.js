@@ -20,16 +20,16 @@ function MyGame() {
 
 	// The camera to view the scene
 	this.mCamera = null;
-	this.mBg = null;
+	// this.mBg = null;
 
 	this.mMsg = null;
 
 	// the hero and the support objects
-	this.mHero = null;
-	this.mBrain = null;
-	this.mLMinion = null;
-	this.mRMinion = null;
-	this.mFocusObj = null;
+	// this.mHero = null;
+	// this.mBrain = null;
+	// this.mLMinion = null;
+	// this.mRMinion = null;
+	// this.mFocusObj = null;
 
 	this.mChoice = 'D';
 }
@@ -58,17 +58,17 @@ MyGame.prototype.initialize = function () {
 	);
 	this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 	// Large background image
-	var bgR = new SpriteRenderable(this.kBg);
-	bgR.setElementPixelPositions(0, 1024, 0, 1024);
-	bgR.getXform().setSize(150, 150);
-	bgR.getXform().setPosition(50, 35);
-	this.mBg = new GameObject(bgR);
+	// var bgR = new SpriteRenderable(this.kBg);
+	// bgR.setElementPixelPositions(0, 1024, 0, 1024);
+	// bgR.getXform().setSize(150, 150);
+	// bgR.getXform().setPosition(50, 35);
+	// this.mBg = new GameObject(bgR);
 
 	// Objects in the scene
-	this.mHero = new Hero(this.kMinionSprite);
-	this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
-	this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
-	this.mFocusObj = this.mHero;
+	// this.mHero = new Hero(this.kMinionSprite);
+	// this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
+	// this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
+	// this.mFocusObj = this.mHero;
 
 	this.mMsg = new FontRenderable("Status Message");
 	this.mMsg.setColor([1, 1, 1, 1]);
@@ -95,11 +95,11 @@ MyGame.prototype.initialize = function () {
 
 MyGame.prototype.drawCamera = function (camera) {
 	camera.setupViewProjection();
-	this.mBg.draw(camera);
-	this.mHero.draw(camera);
+	// this.mBg.draw(camera);
+	// this.mHero.draw(camera);
 
-	this.mLMinion.draw(camera);
-	this.mRMinion.draw(camera);
+	// this.mLMinion.draw(camera);
+	// this.mRMinion.draw(camera);
 
 	// ^_^ --
 	// this.mMineUnopened.draw(camera);
@@ -129,10 +129,10 @@ MyGame.prototype.update = function () {
 
 	this.mCamera.update(); // for smoother camera movements
 
-	this.mLMinion.update(); // for sprite animation
-	this.mRMinion.update();
+	// this.mLMinion.update(); // for sprite animation
+	// this.mRMinion.update();
 
-	this.mHero.update(); // for WASD movement
+	// this.mHero.update(); // for WASD movement
 	this.mMineUnopened.update( // for arrow movement
 		gEngine.Input.keys.Up,
 		gEngine.Input.keys.Down,
