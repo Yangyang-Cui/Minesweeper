@@ -12,7 +12,7 @@
 "use strict"; // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
-	this.kMineUnopened = "assets/bgd.png";
+	this.kMineUnopened = "assets/mine_unopened.png";
 	this.mMineUnopened = null;
 
 	// The camera to view the scene
@@ -40,7 +40,7 @@ MyGame.prototype.initialize = function () {
 	this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
 	this.mMsg = new FontRenderable("Status Message");
-	this.mMsg.setColor([1, 1, 1, 1]);
+	this.mMsg.setColor([0, 0, 0, 1]);
 	this.mMsg.getXform().setPosition(20, 40);
 	this.mMsg.setTextHeight(3);
 
