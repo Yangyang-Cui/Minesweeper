@@ -12,8 +12,14 @@
 "use strict"; // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
+	this.kBgd = "assets/bgd.png";
+	this.mBgd = null;
 	this.kMineUnopened = "assets/mine_unopened.png";
 	this.mMineUnopened = null;
+	this.kMineRed = "assets/mine_red.png";
+	this.mMineRed = null;
+	this.kMineGray = "assets/mine_gray.jpg";
+	this.mMineGray = null;
 
 	// The camera to view the scene
 	this.mCamera = null;
@@ -23,11 +29,17 @@ function MyGame() {
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
+	gEngine.Textures.loadTexture(this.kBgd);
 	gEngine.Textures.loadTexture(this.kMineUnopened);
+	gEngine.Textures.loadTexture(this.kMineRed);
+	gEngine.Textures.loadTexture(this.kMineGray);
 };
 
 MyGame.prototype.unloadScene = function () {
+	gEngine.Textures.unloadTexture(this.kBgd);
 	gEngine.Textures.unloadTexture(this.kMineUnopened);
+	gEngine.Textures.unloadTexture(this.kMineRed);
+	gEngine.Textures.unloadTexture(this.kMineGray);
 };
 
 MyGame.prototype.initialize = function () {
