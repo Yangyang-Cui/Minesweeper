@@ -63,8 +63,6 @@ MyGame.prototype.initialize = function () {
 	this.mMsg.setTextHeight(5);
 
 	// ^_^ --
-	// this.mMineUnopened = new TextureObject(this.kMineUnopened, 5 , 5 , 10, 10);
-	// this.mMineUnopened2 = new TextureObject(this.kMineUnopened, 15 , 5 , 10, 10);
 	this.mBgdSet = [];
 	this.mMineUnopenedSet = [];
 	this.mMineGraySet = [];
@@ -72,6 +70,8 @@ MyGame.prototype.initialize = function () {
 	this.boardSize = this.boardSize * this.boardSize - 5;
 	for (let row = 5; row <= this.boardSize; row+= 10) {
 		for (let column = 5; column <= this.boardSize; column+= 10) {
+			this.mBgd = new TextureObject(this.kBgd, row, column, 10, 10);
+			this.mBgdSet.push(this.mBgd);
 			this.mMineUnopened = new TextureObject(this.kMineUnopened, row, column, 10, 10);
 			this.mMineUnopenedSet.push(this.mMineUnopened);
 		}
@@ -83,13 +83,12 @@ MyGame.prototype.initialize = function () {
 
 MyGame.prototype.drawCamera = function (camera) {
 	camera.setupViewProjection();
-	// ^_^ --
-	// this.mMineUnopened.draw(camera);
-	// this.mMineUnopened2.draw(camera);
+	for (let i = 0; i < this.mBgdSet.length; i++) {
+		this.mBgdSet[i].draw(camera);
+	}
 	for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
 		this.mMineUnopenedSet[i].draw(camera);
 	}
-	// -- ^_^
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -110,13 +109,6 @@ MyGame.prototype.update = function () {
 
 	this.mCamera.update(); // for smoother camera movements
 
-	this.mMineUnopened.update( // for arrow movement
-		gEngine.Input.keys.Up,
-		gEngine.Input.keys.Down,
-		gEngine.Input.keys.Left,
-		gEngine.Input.keys.Right
-	);
-
 	// Brain chasing the hero
 	var h = [];
 
@@ -135,23 +127,18 @@ MyGame.prototype.update = function () {
 	if (gEngine.Input.isButtonPressed(gEngine.Input.mouseButton.Left)) {
 		msg += "[L Down]";
 
-		// console.log('Left mouse pressed');
 	}
 
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
 		if (this.mCamera.isMouseInViewport()) {
 			var x = this.mCamera.mouseWCX();
 			var y = this.mCamera.mouseWCY();
-			// console.log('Left mouse clicked');
 			for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
 				if (this.mMineUnopenedSet[i].getBBox().containsPoint(x, y)) {
 					this.mMineUnopenedSet.splice(i, 1);
-					console.log(this.mMineUnopenedSet);
 					i--;
 				}
 			}
-			// var log = this.mMineUnopened2.getBBox().containsPoint(x, y);
-			// console.log(log);
 		}
 	}
 
