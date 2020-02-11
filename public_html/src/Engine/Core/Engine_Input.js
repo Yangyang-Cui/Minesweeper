@@ -102,7 +102,6 @@ gEngine.Input = (function () {
     var _onMouseMove = function (event) {
         var inside = false;
 				var bBox = mCanvas.getBoundingClientRect();
-				// console.log(bBox);
         // In Canvas Space now. Convert via ratio from canvas to client.
         var x = Math.round((event.clientX - bBox.left) * (mCanvas.width / bBox.width));
         var y = Math.round((event.clientY - bBox.top) * (mCanvas.height / bBox.height));
