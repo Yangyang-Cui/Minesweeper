@@ -20,17 +20,27 @@ function MyGame() {
 	this.mMineRed = null;
 	this.kMineGray = "assets/mine_gray.jpg";
 	this.mMineGray = null;
+	this.kFlag = "assets/flag.png";
+	this.mFlag = null;
 	this.boardSize = 10;
+
+	this.powerBoardSize = null;
 
 	// set will be array
 	this.mBgdSet = null;
 	this.mMineUnopenedSet = null;
 	this.mMineGraySet = null;
+	this.mFlagSet = null;
 
 	// The camera to view the scene
 	this.mCamera = null;
 	// message will be number
 	this.mMsg = null;
+
+	this.mFlagState = false;
+
+	this.mCheckPoint = null;
+	this.mCheckPointSet = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -39,6 +49,7 @@ MyGame.prototype.loadScene = function () {
 	gEngine.Textures.loadTexture(this.kMineUnopened);
 	gEngine.Textures.loadTexture(this.kMineRed);
 	gEngine.Textures.loadTexture(this.kMineGray);
+	gEngine.Textures.loadTexture(this.kFlag);
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -46,6 +57,7 @@ MyGame.prototype.unloadScene = function () {
 	gEngine.Textures.unloadTexture(this.kMineUnopened);
 	gEngine.Textures.unloadTexture(this.kMineRed);
 	gEngine.Textures.unloadTexture(this.kMineGray);
+	gEngine.Textures.unloadTexture(this.kFlag);
 };
 
 MyGame.prototype.initialize = function () {
@@ -66,18 +78,13 @@ MyGame.prototype.initialize = function () {
 	this.mBgdSet = [];
 	this.mMineUnopenedSet = [];
 	this.mMineGraySet = [];
+	this.mFlagSet = [];
+	this.mCheckPointSet = []
 
-	this.boardSize = this.boardSize * this.boardSize - 5;
-	for (let row = 5; row <= this.boardSize; row+= 10) {
-		for (let column = 5; column <= this.boardSize; column+= 10) {
-			this.mBgd = new TextureObject(this.kBgd, row, column, 10, 10);
-			this.mBgdSet.push(this.mBgd);
-			this.mMineUnopened = new TextureObject(this.kMineUnopened, row, column, 10, 10);
-			this.mMineUnopenedSet.push(this.mMineUnopened);
-		}
-	}
+	this.powerBoardSize = this.boardSize * this.boardSize;
+	this._Board(this.powerBoardSize, 10);
+	// console.log(this.mCheckPointSet);
 	// -- ^_^
-
 };
 
 
@@ -88,6 +95,11 @@ MyGame.prototype.drawCamera = function (camera) {
 	}
 	for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
 		this.mMineUnopenedSet[i].draw(camera);
+	}
+	if (this.mFlagSet !== null) {
+		for (let i = 0; i < this.mFlagSet.length; i++) {
+			this.mFlagSet[i].draw(camera);
+		}
 	}
 };
 
@@ -108,9 +120,6 @@ MyGame.prototype.update = function () {
 	var msg = "L/R: Left or Right Minion; H: Dye; P: Portal]: ";
 
 	this.mCamera.update(); // for smoother camera movements
-
-	// Brain chasing the hero
-	var h = [];
 
 	// Pan camera to object
 	if (gEngine.Input.isKeyClicked(gEngine.Input.keys.L)) {
@@ -136,10 +145,13 @@ MyGame.prototype.update = function () {
 			for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
 				if (this.mMineUnopenedSet[i].getBBox().containsPoint(x, y)) {
 					this.mMineUnopenedSet.splice(i, 1);
-					i--;
 				}
 			}
 		}
+	}
+	let flagState = false;
+	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Right)) {
+
 	}
 
 	// msg += " X=" + gEngine.Input.getMousePosX() + " Y=" + gEngine.Input.getMousePosY();

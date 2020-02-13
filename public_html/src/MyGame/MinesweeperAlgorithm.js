@@ -4,15 +4,6 @@ var getRandomInteger = function (min, max) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var isMined = function (board, id) {
-	var cell = board[id];
-	var mined = 0;
-	if (typeof cell !== 'undefined') {
-		mined = cell.mined ? 1 : 0;
-	}
-	return mined;
-}
-
 var handleClick = function (id) {
 	if (!gameOver) {
 		if (ctrlIsPressed) {
@@ -49,59 +40,6 @@ var handleClick = function (id) {
 	}
 }
 
-
-var getNeighbors = function (id) {
-	// var test= id[0] + "***" + id[1];
-	// var id = test;
-	// console.log(id);
-	var row = parseInt(id[0]);
-	// console.log(row);
-	var column = parseInt(id[1]);
-	// console.log(column);
-	var neighbors = [];
-	neighbors.push((row - 1) + "" + (column - 1));
-	neighbors.push((row - 1) + "" + column);
-	neighbors.push((row - 1) + "" + (column + 1));
-	neighbors.push(row + "" + (column - 1));
-	neighbors.push(row + "" + (column + 1));
-	neighbors.push((row + 1) + "" + (column - 1));
-	neighbors.push((row + 1) + "" + column);
-	neighbors.push((row + 1) + "" + (column + 1));
-	// console.log(neighbors);
-	for (var i = 0; i < neighbors.length; i++) {
-		// console.log(neighbors[i].length);
-		// console.log("out" + i);
-		if (neighbors[i].length > 2) {
-			neighbors.splice(i, 1);
-			console.log(neighbors);
-			i--;
-			console.log("in" + i);
-		}
-	}
-	// console.log("~~~~~~~~~~~~~~~");
-	// console.log(neighbors);
-	// console.log("======================")
-
-	return neighbors
-}
-
-var randomlyAssignMines = function (board, mineCount) {
-	var mineCoordinates = [];
-	for (var i = 0; i < mineCount; i++) {
-		var randomRowCoordinate = getRandomInteger(0, boardSize);
-		var randomColumnCoordinate = getRandomInteger(0, boardSize);
-		var cell = randomRowCoordinate + "" + randomColumnCoordinate;
-		while (mineCoordinates.includes(cell)) {
-			randomRowCoordinate = getRandomInteger(0, boardSize);
-			randomColumnCoordinate = getRandomInteger(0, boardSize);
-			cell = randomRowCoordinate + "" + randomColumnCoordinate;
-		}
-		mineCoordinates.push(cell);
-		board[cell].mined = true;
-	}
-	return board;
-}
-
 function Cell(row, column, opened, flagged, mined, neighborMineCount) {
 	return {
 		id: row + "" + column,
@@ -123,7 +61,23 @@ function Board(boardSize, mineCount) {
 	}
 	board = randomlyAssignMines(board, mineCount);
 	board = calculateNeighborMineCounts(board, boardSize);
-	// console.log(board);
+	return board;
+}
+
+var randomlyAssignMines = function (board, mineCount) {
+	var mineCoordinates = [];
+	for (var i = 0; i < mineCount; i++) {
+		var randomRowCoordinate = getRandomInteger(0, boardSize);
+		var randomColumnCoordinate = getRandomInteger(0, boardSize);
+		var cell = randomRowCoordinate + "" + randomColumnCoordinate;
+		while (mineCoordinates.includes(cell)) {
+			randomRowCoordinate = getRandomInteger(0, boardSize);
+			randomColumnCoordinate = getRandomInteger(0, boardSize);
+			cell = randomRowCoordinate + "" + randomColumnCoordinate;
+		}
+		mineCoordinates.push(cell);
+		board[cell].mined = true;
+	}
 	return board;
 }
 
@@ -133,10 +87,8 @@ var calculateNeighborMineCounts = function (board, boardSize) {
 	for (var row = 0; row < boardSize; row++) {
 		for (var column = 0; column < boardSize; column++) {
 			var id = row + "" + column;
-			// console.log(typeof id);
 			cell = board[id];
 			if (!cell.mined) {
-				// console.log(id);
 				var neighbors = getNeighbors(id);
 				neighborMineCount = 0;
 				for (var i = 0; i < neighbors.length; i++) {
@@ -147,4 +99,38 @@ var calculateNeighborMineCounts = function (board, boardSize) {
 		}
 	}
 	return board;
+}
+
+var getNeighbors = function (id) {
+	var row = parseInt(id[0]);
+
+	var column = parseInt(id[1]);
+
+	var neighbors = [];
+	neighbors.push((row - 1) + "" + (column - 1));
+	neighbors.push((row - 1) + "" + column);
+	neighbors.push((row - 1) + "" + (column + 1));
+	neighbors.push(row + "" + (column - 1));
+	neighbors.push(row + "" + (column + 1));
+	neighbors.push((row + 1) + "" + (column - 1));
+	neighbors.push((row + 1) + "" + column);
+	neighbors.push((row + 1) + "" + (column + 1));
+
+	for (var i = 0; i < neighbors.length; i++) {
+		if (neighbors[i].length > 2) {
+			neighbors.splice(i, 1);
+			i--;
+		}
+	}
+
+	return neighbors
+}
+
+var isMined = function (board, id) {
+	var cell = board[id];
+	var mined = 0;
+	if (typeof cell !== 'undefined') {
+		mined = cell.mined ? 1 : 0;
+	}
+	return mined;
 }
