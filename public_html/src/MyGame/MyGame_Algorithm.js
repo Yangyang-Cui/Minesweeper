@@ -23,7 +23,7 @@
 // 	}
 // }
 
-function Cell(x, y, opened, flagged, mined, neighborMineCount) {
+function Cell(x, y, opened, flagged, mined, neighborMineCount, mineUnopenedImage, mineImage, flagImage) {
 	return {
 		id: x + '*' + y,
 		x: x,
@@ -31,31 +31,41 @@ function Cell(x, y, opened, flagged, mined, neighborMineCount) {
 		opened: opened,
 		flagged: flagged,
 		mined: mined,
-		neighborMineCount: neighborMineCount
+		neighborMineCount: neighborMineCount,
+		mineUnopenedImage: mineUnopenedImage,
+		mineImage: mineImage,
+		flagImage: flagImage
 	};
 }
 
 MyGame.prototype._Board = function(boardSize, mineCount) {
-	var board = {};
+	this.board = {};
 	for (let x = 5; x < boardSize; x += 10) {
 		for (let y = 5; y < boardSize; y += 10) {
-			board[x + '*' + y] = Cell(x, y, false, false, false, 0);
+			this.mMineUnopened = new TextureObject(this.kMineUnopened, x, y, 10, 10);
+			this.mMineGray = new TextureObject(this.kMineGray, x, y, 10, 10);
+			this.mFlag = new TextureObject(this.kFlag, x, y, 10, 10);
+			this.mFlag.setVisibility(false);
+			this.board[x + '*' + y] = Cell(x, y, false, false, false, 0, this.mMineUnopened, this.mMineGray, this.mFlag);
+
 			this.mBgd = new TextureObject(this.kBgd, x, y, 10, 10);
 			this.mBgdSet.push(this.mBgd);
-			this.mMineUnopened = new TextureObject(this.kMineUnopened, x, y, 10, 10);
-			this.mMineUnopenedSet.push(this.mMineUnopened);
+
+			this.mMineUnopenedSet.push(this.board[x + '*' + y].mineUnopenedImage);
+			this.mFlagSet.push(this.board[x + '*' + y].flagImage);
+
 			this.mCheckPoint = [x, y];
 			this.mCheckPointSet.push(this.mCheckPoint);
 		}
 	}
 	// console.log(board);
-	board = this._randomlyAssignMines(board, mineCount);
-	board = this._calculateNeighborMineCounts(board, boardSize);
+	this.board = this._randomlyAssignMines(this.board, mineCount);
+	this.board = this._calculateNeighborMineCounts(this.board, boardSize);
 	// console.log(board)
-	return board;
+	return this.board;
 };
 
-MyGame.prototype._randomlyAssignMines = function(board, mineCount) {
+MyGame.prototype._randomlyAssignMines = function(mineCount) {
 	var mineCoordinates = [];
 	for (var i = 0; i < mineCount; i++) {
 		var index = getRandomInteger(0, this.mCheckPointSet.length);
@@ -69,38 +79,38 @@ MyGame.prototype._randomlyAssignMines = function(board, mineCount) {
 			var randomYCoordinate = this.mCheckPointSet[index][1];
 			var cell = randomXCoordinate + '*' + randomYCoordinate;
 		}
-		console.log(cell);
+		// console.log(cell);
 		mineCoordinates.push(cell);
-		board[cell].mined = true;
+		this.board[cell].mined = true;
 		// console.log(board);
 		// console.log('board[cell].mined: ', mineCoordinates);
 	}
-	return board;
+	return this.board;
 };
 
 function getRandomInteger(min, max) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-MyGame.prototype._calculateNeighborMineCounts = function(board, boardSize) {
+MyGame.prototype._calculateNeighborMineCounts = function(boardSize) {
 	var cell;
 	var neighborMineCount = 0;
 	for (let x = 5; x < boardSize; x += 10) {
 		for (let y = 5; y < boardSize; y += 10) {
 			var id = x + '*' + y;
-			cell = board[id];
+			cell = this.board[id];
 			if (!cell.mined) {
 				var neighbors = this._getNeighbors(id);
 				neighborMineCount = 0;
 				for (var i = 0; i < neighbors.length; i++) {
-					neighborMineCount += isMined(board, neighbors[i]);
+					neighborMineCount += isMined(this.board, neighbors[i]);
 				}
 				cell.neighborMineCount = neighborMineCount;
 			}
 		}
 	}
 
-	return board;
+	return this.board;
 };
 
 function getXY(id) {
@@ -172,8 +182,8 @@ MyGame.prototype._getNeighbors = function(id) {
 	return neighbors;
 };
 
-function isMined(board, id) {
-	var cell = board[id];
+function isMined(id) {
+	var cell = this.board[id];
 	var mined = 0;
 	if (typeof cell !== 'undefined') {
 		mined = cell.mined ? 1 : 0;

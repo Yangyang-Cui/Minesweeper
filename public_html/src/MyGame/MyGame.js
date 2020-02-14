@@ -23,6 +23,7 @@ function MyGame() {
 	this.kFlag = "assets/flag.png";
 	this.mFlag = null;
 	this.boardSize = 10;
+	this.minesRemaining = this.boardSize;
 
 	this.powerBoardSize = null;
 
@@ -36,11 +37,18 @@ function MyGame() {
 	this.mCamera = null;
 	// message will be number
 	this.mMsg = null;
+	this.mMsgSet = null;
 
 	this.mFlagState = false;
 
 	this.mCheckPoint = null;
 	this.mCheckPointSet = null;
+
+	this.gameOver = false;
+	this.mClickFlag = null;
+	this.mClickFlagSet = null;
+	this.board = null;
+	this.id = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -69,10 +77,12 @@ MyGame.prototype.initialize = function () {
 	);
 	this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
-	this.mMsg = new FontRenderable("Status Message");
-	this.mMsg.setColor([0, 0, 0, 1]);
-	this.mMsg.getXform().setPosition(20, 40);
-	this.mMsg.setTextHeight(5);
+	this.mBgdSet = [];
+
+	// this.mMsg = new FontRenderable("Status Message");
+	// this.mMsg.setColor([0, 0, 0, 1]);
+	// this.mMsg.getXform().setPosition(20, 40);
+	// this.mMsg.setTextHeight(5);
 
 	// ^_^ --
 	this.mBgdSet = [];
@@ -80,10 +90,14 @@ MyGame.prototype.initialize = function () {
 	this.mMineGraySet = [];
 	this.mFlagSet = [];
 	this.mCheckPointSet = []
+	this.mClickFlagSet = [];
 
 	this.powerBoardSize = this.boardSize * this.boardSize;
 	this._Board(this.powerBoardSize, 10);
+	// console.log(this.board);
 	// console.log(this.mCheckPointSet);
+	// console.table(this.mMineUnopenedSet);
+	// console.table(this.mFlagSet);
 	// -- ^_^
 };
 
@@ -94,13 +108,17 @@ MyGame.prototype.drawCamera = function (camera) {
 		this.mBgdSet[i].draw(camera);
 	}
 	for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
-		this.mMineUnopenedSet[i].draw(camera);
+		if (this.mMineUnopenedSet[i].mVisible) {
+			this.mMineUnopenedSet[i].draw(camera);
+		}
 	}
-	if (this.mFlagSet !== null) {
-		for (let i = 0; i < this.mFlagSet.length; i++) {
+
+	for (let i = 0; i < this.mFlagSet.length; i++) {
+		if (this.mFlagSet[i].mVisible) {
 			this.mFlagSet[i].draw(camera);
 		}
 	}
+
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -111,13 +129,13 @@ MyGame.prototype.draw = function () {
 
 	// Step  B: Draw with all three cameras
 	this.drawCamera(this.mCamera);
-	this.mMsg.draw(this.mCamera); // only draw status in the main camera
+	// this.mMsg.draw(this.mCamera); // only draw status in the main camera
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
-	var msg = "L/R: Left or Right Minion; H: Dye; P: Portal]: ";
+	var msg = "";
 
 	this.mCamera.update(); // for smoother camera movements
 
@@ -130,8 +148,6 @@ MyGame.prototype.update = function () {
 		this.mCamera.shake(-2, -2, 20, 30);
 	}
 
-
-	msg = "";
 	// testing the mouse input
 	if (gEngine.Input.isButtonPressed(gEngine.Input.mouseButton.Left)) {
 		msg += "[L Down]";
@@ -139,22 +155,32 @@ MyGame.prototype.update = function () {
 	}
 
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
-		if (this.mCamera.isMouseInViewport()) {
-			var x = this.mCamera.mouseWCX();
-			var y = this.mCamera.mouseWCY();
-			for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
-				if (this.mMineUnopenedSet[i].getBBox().containsPoint(x, y)) {
-					this.mMineUnopenedSet.splice(i, 1);
-				}
-			}
-		}
+		this._getClickedID();
+		this._handleLeftClick(this.id);
 	}
-	let flagState = false;
-	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Right)) {
 
+
+	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Right)) {
+		this._getClickedID();
+		console.log(this.id);
+		this._handleRightClick(this.id);
 	}
 
 	// msg += " X=" + gEngine.Input.getMousePosX() + " Y=" + gEngine.Input.getMousePosY();
 	msg += " X=" + this.mCamera.mouseWCX() + " Y=" + this.mCamera.mouseWCY();
-	this.mMsg.setText(msg);
+	// this.mMsg.setText(msg);
 };
+
+MyGame.prototype._getClickedID = function() {
+	if (this.mCamera.isMouseInViewport()) {
+		var x = this.mCamera.mouseWCX();
+		var y = this.mCamera.mouseWCY();
+		for (let i = 0; i < this.mBgdSet.length; i++) {
+			if (this.mBgdSet[i].getBBox().containsPoint(x, y)) {
+				var idX = this.mBgdSet[i].getXform().getXPos();
+				var idY = this.mBgdSet[i].getXform().getYPos();
+				this.id = idX + "*" + idY;
+			}
+		}
+	}
+}
