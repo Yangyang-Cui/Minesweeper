@@ -18,9 +18,7 @@ MyGame.prototype._handleLeftClick = function (id) {
 		if (!cell.opened) {
 			if (!cell.flagged) {
 				if (cell.mined) {
-					loss();
-					// $cell.html(MINE).css('color', 'red');
-					// some code here
+					this._loss();
 				} else {
 					cell.opened = true;
 					cell.mineUnopenedImage.setVisibility(false);
@@ -50,19 +48,8 @@ MyGame.prototype._handleRightClick = function (id) {
 
 		MyGame.prototype._loss = function () {
 			this.gameOver = true;
-			$('#messageBox').text('Game Over!')
-				.css({
-					'color': 'white',
-					'background-color': 'red'
-				});
-			var cells = Object.keys(board);
-			for (var i = 0; i < cells.length; i++) {
-				if (board[cells[i]].mined && !board[cells[i]].flagged) {
-					$('#' + board[cells[i]].id).html(MINE)
-						.css('color', 'black');
-				}
-			}
-			clearInterval(timeout);
+			this.mMineUnopenedSet = null;
+			this.mFlagSet = null;
 		}
 
 
