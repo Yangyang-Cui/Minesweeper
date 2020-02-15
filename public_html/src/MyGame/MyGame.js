@@ -23,6 +23,7 @@ function MyGame() {
 	this.kFlag = "assets/flag.png";
 	this.mFlag = null;
 	this.boardSize = 10;
+	this.cellSize = 10;
 	this.minesRemaining = this.boardSize;
 
 	this.powerBoardSize = null;
@@ -44,11 +45,14 @@ function MyGame() {
 	this.mCheckPoint = null;
 	this.mCheckPointSet = null;
 
+	this.mCheckPointStar = null;
+	this.mCheckPointStarSet = null;
+
 	this.gameOver = false;
-	this.mClickFlag = null;
-	this.mClickFlagSet = null;
+
 	this.board = null;
 	this.id = null;
+	this.mineCount = 10;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -90,29 +94,36 @@ MyGame.prototype.initialize = function () {
 	this.mMineGraySet = [];
 	this.mFlagSet = [];
 	this.mCheckPointSet = []
-	this.mClickFlagSet = [];
+	this.mCheckPointStarSet = []
 
 	this.powerBoardSize = this.boardSize * this.boardSize;
-	this._Board(this.powerBoardSize, 10);
+	this._Board(this.powerBoardSize, this.mineCount);
+	// console.log(this.mMsgSet);
+	// console.log(this.mMsgSet[i].mined);
 	// console.log(this.board);
-	// console.log(this.mCheckPointSet);
-	// console.table(this.mMineUnopenedSet);
-	// console.table(this.mFlagSet);
 	// -- ^_^
 };
 
 
 MyGame.prototype.drawCamera = function (camera) {
 	camera.setupViewProjection();
+	// Bgd
 	for (let i = 0; i < this.mBgdSet.length; i++) {
 		this.mBgdSet[i].draw(camera);
 	}
+	// Mine
+	// for (let i = 0; i < this.mMineGraySet.length; i++) {
+	// 	if (this.mMsgSet[i].mined) {
+	// 		this.mMineGraySet[i].draw(camera);
+	// 	}
+	// }
+	// Mine_unopened
 	for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
 		if (this.mMineUnopenedSet[i].mVisible) {
 			this.mMineUnopenedSet[i].draw(camera);
 		}
 	}
-
+	// Flag
 	for (let i = 0; i < this.mFlagSet.length; i++) {
 		if (this.mFlagSet[i].mVisible) {
 			this.mFlagSet[i].draw(camera);
@@ -171,16 +182,3 @@ MyGame.prototype.update = function () {
 	// this.mMsg.setText(msg);
 };
 
-MyGame.prototype._getClickedID = function() {
-	if (this.mCamera.isMouseInViewport()) {
-		var x = this.mCamera.mouseWCX();
-		var y = this.mCamera.mouseWCY();
-		for (let i = 0; i < this.mBgdSet.length; i++) {
-			if (this.mBgdSet[i].getBBox().containsPoint(x, y)) {
-				var idX = this.mBgdSet[i].getXform().getXPos();
-				var idY = this.mBgdSet[i].getXform().getYPos();
-				this.id = idX + "*" + idY;
-			}
-		}
-	}
-}
