@@ -48,50 +48,8 @@ MyGame.prototype._handleRightClick = function (id) {
 
 		MyGame.prototype._loss = function () {
 			this.gameOver = true;
-			this.mMineUnopenedSet = null;
-			this.mFlagSet = null;
+			this.mMineRed = new TextureObject(this.kMineRed, this.board[this.id].x, this.board[this.id].y, this.cellSize, this.cellSize);
+			this.mMineUnopenedSet = [];
+			this.mFlagSet = [];
 		}
 
-
-		// MyGame.prototype._initializeCells = function (boardSize) {
-		// 	var row = 0;
-		// 	var column = 0;
-		// 	$(".cell").each(function () {
-		// 		$(this).attr("id", row + "" + column).css('color', 'black').text("");
-		// 		$('#' + row + "" + column).css('background-image',
-		// 			'radial-gradient(#fff,#e6e6e6)');
-		// 		column++;
-		// 		if (column >= boardSize) {
-		// 			column = 0;
-		// 			row++;
-		// 		}
-
-		// 		$(this).off().click(function (e) {
-		// 			handleClick($(this).attr("id"));
-		// 			var isVictory = true;
-		// 			var cells = Object.keys(board);
-		// 			for (var i = 0; i < cells.length; i++) {
-		// 				if (!board[cells[i]].mined) {
-		// 					if (!board[cells[i]].opened) {
-		// 						isVictory = false;
-		// 						break;
-		// 					}
-		// 				}
-		// 			}
-
-		// 			if (isVictory) {
-		// 				this.gameOver = true;
-		// 				$('#messageBox').text('You Win!').css({
-		// 					'color': 'white',
-		// 					'background-color': 'green'
-		// 				});
-		// 				clearInterval(timeout);
-		// 			}
-		// 		});
-
-		// 		$(this).contextmenu(function (e) {
-		// 			handleRightClick($(this).attr("id"));
-		// 			return false;
-		// 		});
-		// 	})
-		// }

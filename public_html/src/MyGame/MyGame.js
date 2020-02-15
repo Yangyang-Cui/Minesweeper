@@ -14,14 +14,22 @@
 function MyGame() {
 	this.kBgd = "assets/bgd.png";
 	this.mBgd = null;
+	this.mBgdSet = null;
+
 	this.kMineUnopened = "assets/mine_unopened.png";
 	this.mMineUnopened = null;
+	this.mMineUnopenedSet = null;
+
 	this.kMineRed = "assets/mine_red.png";
 	this.mMineRed = null;
 	this.kMineGray = "assets/mine_gray.jpg";
 	this.mMineGray = null;
+	this.mMineGraySet = null;
+
 	this.kFlag = "assets/flag.png";
 	this.mFlag = null;
+	this.mFlagSet = null;
+
 	this.boardSize = 10;
 	this.cellSize = 10;
 	this.minesRemaining = this.boardSize;
@@ -29,10 +37,6 @@ function MyGame() {
 	this.powerBoardSize = null;
 
 	// set will be array
-	this.mBgdSet = null;
-	this.mMineUnopenedSet = null;
-	this.mMineGraySet = null;
-	this.mFlagSet = null;
 
 	// The camera to view the scene
 	this.mCamera = null;
@@ -127,6 +131,9 @@ MyGame.prototype.drawCamera = function (camera) {
 		if (this.mFlagSet[i].mVisible) {
 			this.mFlagSet[i].draw(camera);
 		}
+	}
+	if (this.mMineRed !== null) {
+		this.mMineRed.draw(camera);
 	}
 };
 
