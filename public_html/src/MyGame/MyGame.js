@@ -30,17 +30,10 @@ function MyGame() {
 	this.mFlag = null;
 	this.mFlagSet = null;
 
-	this.boardSize = 10;
-	this.cellSize = 10;
-	this.minesRemaining = this.boardSize;
-
 	this.powerBoardSize = null;
 
-	// set will be array
-
-	// The camera to view the scene
 	this.mCamera = null;
-	// message will be number
+
 	this.mMsg = null;
 	this.mMsgSet = null;
 
@@ -55,8 +48,12 @@ function MyGame() {
 	this.gameOver = false;
 
 	this.board = null;
-	this.id = null;
-	this.mineCount = 10;
+	this.id = null;	
+
+	this.boardSize = 10;
+	this.cellSize = 10;
+	this.minesRemaining = this.boardSize;
+	this.mineCount = 15;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -92,7 +89,6 @@ MyGame.prototype.initialize = function () {
 	// this.mMsg.getXform().setPosition(20, 40);
 	// this.mMsg.setTextHeight(5);
 
-	// ^_^ --
 	this.mBgdSet = [];
 	this.mMineUnopenedSet = [];
 	this.mMineGraySet = [];
@@ -102,10 +98,6 @@ MyGame.prototype.initialize = function () {
 
 	this.powerBoardSize = this.boardSize * this.boardSize;
 	this._Board(this.powerBoardSize, this.mineCount);
-
-	// console.log(this.mMineGraySet);
-	// console.log(this.board);
-	// -- ^_^
 };
 
 
