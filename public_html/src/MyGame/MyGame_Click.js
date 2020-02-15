@@ -30,22 +30,17 @@ MyGame.prototype._handleLeftClick = function (id) {
 	}
 }
 
-
 MyGame.prototype._handleRightClick = function (id) {
 		if (!this.gameOver) {
 			var cell = this.board[id];
 			if (!cell.opened) {
-				console.log(this.minesRemaining);
 				if (!cell.flagged && this.minesRemaining > 0) {
 						cell.flagged = true;
-						console.log("hei there");
 						cell.flagImage.setVisibility(true);
 						this.minesRemaining--;
 					} else if (cell.flagged) {
-						console.log("4");
 						cell.flagged = false;
 						cell.flagImage.setVisibility(false);
-						// $cell.html("").css('color', 'black');
 						this.minesRemaining++;
 					}
 				}

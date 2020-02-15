@@ -98,8 +98,8 @@ MyGame.prototype.initialize = function () {
 
 	this.powerBoardSize = this.boardSize * this.boardSize;
 	this._Board(this.powerBoardSize, this.mineCount);
-	// console.log(this.mMsgSet);
-	// console.log(this.mMsgSet[i].mined);
+
+	// console.log(this.mMineGraySet);
 	// console.log(this.board);
 	// -- ^_^
 };
@@ -112,11 +112,10 @@ MyGame.prototype.drawCamera = function (camera) {
 		this.mBgdSet[i].draw(camera);
 	}
 	// Mine
-	// for (let i = 0; i < this.mMineGraySet.length; i++) {
-	// 	if (this.mMsgSet[i].mined) {
-	// 		this.mMineGraySet[i].draw(camera);
-	// 	}
-	// }
+	for (let i = 0; i < this.mMineGraySet.length; i++) {
+			this.mMineGraySet[i].draw(camera);
+
+	}
 	// Mine_unopened
 	for (let i = 0; i < this.mMineUnopenedSet.length; i++) {
 		if (this.mMineUnopenedSet[i].mVisible) {
@@ -129,7 +128,6 @@ MyGame.prototype.drawCamera = function (camera) {
 			this.mFlagSet[i].draw(camera);
 		}
 	}
-
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -173,7 +171,6 @@ MyGame.prototype.update = function () {
 
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Right)) {
 		this._getClickedID();
-		console.log(this.id);
 		this._handleRightClick(this.id);
 	}
 

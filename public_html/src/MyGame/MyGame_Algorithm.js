@@ -20,7 +20,7 @@ MyGame.prototype._Board = function (boardSize, mineCount) {
 			this.mMineUnopened = new TextureObject(this.kMineUnopened, x, y, this.cellSize, this.cellSize);
 			this.mFlag = new TextureObject(this.kFlag, x, y, this.cellSize, this.cellSize);
 			this.mFlag.setVisibility(false);
-			this.mMineGray = new TextureObject(this.kMineGray, x, y, this.cellSize, this.cellSize);
+			this.mMineGray = null;
 			this.board[x + '*' + y] = Cell(x, y, false, false, false, 0, this.mMineUnopened, this.mMineGray, this.mFlag);
 
 			this.mBgd = new TextureObject(this.kBgd, x, y, this.cellSize, this.cellSize);
@@ -28,7 +28,6 @@ MyGame.prototype._Board = function (boardSize, mineCount) {
 
 			this.mMineUnopenedSet.push(this.board[x + '*' + y].mineUnopenedImage);
 			this.mFlagSet.push(this.board[x + '*' + y].flagImage);
-			this.mMineGraySet.push(this.mFlag);
 
 			this.mCheckPoint = [x, y];
 			this.mCheckPointSet.push(this.mCheckPoint);
@@ -48,7 +47,7 @@ MyGame.prototype._randomlyAssignMines = function (mineCount) {
 
 	for (var i = 0; i < mineCount; i++) {
 		var index = getRandomInteger(0, this.mCheckPointSet.length);
-		// console.log('index :', index);
+
 		var randomXCoordinate = this.mCheckPointSet[index][0];
 		var randomYCoordinate = this.mCheckPointSet[index][1];
 		var cell = randomXCoordinate + '*' + randomYCoordinate;
@@ -58,11 +57,12 @@ MyGame.prototype._randomlyAssignMines = function (mineCount) {
 			var randomYCoordinate = this.mCheckPointSet[index][1];
 			var cell = randomXCoordinate + '*' + randomYCoordinate;
 		}
-
 		mineCoordinates.push(cell);
 		this.board[cell].mined = true;
+		this.mMineGray = new TextureObject(this.kMineGray, randomXCoordinate, randomYCoordinate , this.cellSize, this.cellSize);
+		this.mMineGraySet.push(this.mMineGray);
 	}
-
+	console.log(mineCoordinates);
 	return this.board;
 };
 
