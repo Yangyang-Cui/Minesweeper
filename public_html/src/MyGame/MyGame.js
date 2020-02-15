@@ -48,7 +48,7 @@ function MyGame() {
 	this.gameOver = false;
 
 	this.board = null;
-	this.id = null;	
+	this.id = null;
 
 	this.boardSize = 10;
 	this.cellSize = 10;
@@ -84,10 +84,10 @@ MyGame.prototype.initialize = function () {
 
 	this.mBgdSet = [];
 
-	// this.mMsg = new FontRenderable("Status Message");
-	// this.mMsg.setColor([0, 0, 0, 1]);
-	// this.mMsg.getXform().setPosition(20, 40);
-	// this.mMsg.setTextHeight(5);
+	this.mMsg = new FontRenderable("Status Message");
+	this.mMsg.setColor([0, 0, 0, 1]);
+	this.mMsg.getXform().setPosition(20, 40);
+	this.mMsg.setTextHeight(5);
 
 	this.mBgdSet = [];
 	this.mMineUnopenedSet = [];
@@ -95,9 +95,12 @@ MyGame.prototype.initialize = function () {
 	this.mFlagSet = [];
 	this.mCheckPointSet = []
 	this.mCheckPointStarSet = []
+	this.mMsgSet = [];
 
 	this.powerBoardSize = this.boardSize * this.boardSize;
 	this._Board(this.powerBoardSize, this.mineCount);
+	this._number();
+		console.log(this.mMsgSet);
 };
 
 
@@ -107,9 +110,13 @@ MyGame.prototype.drawCamera = function (camera) {
 	for (let i = 0; i < this.mBgdSet.length; i++) {
 		this.mBgdSet[i].draw(camera);
 	}
+	// number
+	for (let i = 0; i < this.mMsgSet.length; i++) {
+		this.mMsgSet[i].draw(camera);
+	}
 	// Mine
 	for (let i = 0; i < this.mMineGraySet.length; i++) {
-			this.mMineGraySet[i].draw(camera);
+		this.mMineGraySet[i].draw(camera);
 
 	}
 	// Mine_unopened
@@ -137,13 +144,11 @@ MyGame.prototype.draw = function () {
 
 	// Step  B: Draw with all three cameras
 	this.drawCamera(this.mCamera);
-	// this.mMsg.draw(this.mCamera); // only draw status in the main camera
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
-	var msg = "";
 
 	this.mCamera.update(); // for smoother camera movements
 
@@ -158,7 +163,6 @@ MyGame.prototype.update = function () {
 
 	// testing the mouse input
 	if (gEngine.Input.isButtonPressed(gEngine.Input.mouseButton.Left)) {
-		msg += "[L Down]";
 
 	}
 
@@ -172,9 +176,4 @@ MyGame.prototype.update = function () {
 		this._getClickedID();
 		this._handleRightClick(this.id);
 	}
-
-	// msg += " X=" + gEngine.Input.getMousePosX() + " Y=" + gEngine.Input.getMousePosY();
-	msg += " X=" + this.mCamera.mouseWCX() + " Y=" + this.mCamera.mouseWCY();
-	// this.mMsg.setText(msg);
 };
-
