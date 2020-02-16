@@ -71,4 +71,6 @@ MyGame.prototype._loss = function () {
 	this.mMineRed = new TextureObject(this.kMineRed, this.board[this.id].x, this.board[this.id].y, this.cellSize, this.cellSize);
 	this.mMineUnopenedSet = [];
 	this.mFlagSet = [];
+	this.mCamera.shake(-2, -2, 20, 30);
+	window.alert('you lose');
 }

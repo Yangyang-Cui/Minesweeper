@@ -56,7 +56,7 @@ function MyGame() {
 
 	this.boardSize = 10;
 	this.cellSize = 10;
-	this.mineCount = 5;
+	this.mineCount = 10;
 	this.minesRemaining = this.mineCount;
 
 	this.cell = null;
@@ -136,6 +136,7 @@ MyGame.prototype.drawCamera = function (camera) {
 			this.mFlagSet[i].draw(camera);
 		}
 	}
+	// Red_mine
 	if (this.mMineRed !== null) {
 		this.mMineRed.draw(camera);
 	}
@@ -163,7 +164,7 @@ MyGame.prototype.update = function () {
 	}
 
 	if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
-		this.mCamera.shake(-2, -2, 20, 30);
+
 	}
 
 	// testing the mouse input

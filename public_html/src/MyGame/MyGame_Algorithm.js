@@ -62,7 +62,7 @@ MyGame.prototype._randomlyAssignMines = function (mineCount) {
 		this.mMineGray = new TextureObject(this.kMineGray, randomXCoordinate, randomYCoordinate, this.cellSize, this.cellSize);
 		this.mMineGraySet.push(this.mMineGray);
 	}
-	console.log(mineCoordinates);
+	// console.log(mineCoordinates);
 	return this.board;
 };
 
