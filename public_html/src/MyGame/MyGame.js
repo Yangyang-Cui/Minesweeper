@@ -49,11 +49,17 @@ function MyGame() {
 
 	this.board = null;
 	this.id = null;
+	this.idX = null;
+	this.idY = null;
+	this.number = null;
+	this.numberMsg = null;
 
 	this.boardSize = 10;
 	this.cellSize = 10;
-	this.minesRemaining = this.boardSize;
-	this.mineCount = 15;
+	this.mineCount = 5;
+	this.minesRemaining = this.mineCount;
+
+	this.cell = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -100,7 +106,6 @@ MyGame.prototype.initialize = function () {
 	this.powerBoardSize = this.boardSize * this.boardSize;
 	this._Board(this.powerBoardSize, this.mineCount);
 	this._number();
-		console.log(this.mMsgSet);
 };
 
 
@@ -169,6 +174,21 @@ MyGame.prototype.update = function () {
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
 		this._getClickedID();
 		this._handleLeftClick(this.id);
+		var isVictory = true;
+		var cells = Object.keys(this.board);
+		for (var i = 0; i < cells.length; i++) {
+			if (!this.board[cells[i]].mined) {
+				if (!this.board[cells[i]].opened) {
+					isVictory = false;
+					break;
+				}
+			}
+		}
+
+		if (isVictory) {
+			this.gameOver = true;
+			window.alert("you win");
+		}
 	}
 
 
