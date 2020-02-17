@@ -102,8 +102,11 @@ function getXY(id) {
 }
 
 MyGame.prototype._getNeighbors = function (id) {
-	let x = getXY(id)[0];
-	let y = getXY(id)[1];
+	// let x = getXY(id)[0];
+	// let y = getXY(id)[1];
+	let cell = this.board[id];
+	let x = cell.x;
+	let y = cell.y;
 
 	var neighbors = [];
 	var trueNeighbors = []

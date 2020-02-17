@@ -56,7 +56,7 @@ function MyGame() {
 
 	this.boardSize = 10;
 	this.cellSize = 10;
-	this.mineCount = 10;
+	this.mineCount = 5;
 	this.minesRemaining = this.mineCount;
 
 	this.cell = null;
@@ -188,7 +188,10 @@ MyGame.prototype.update = function () {
 
 		if (isVictory) {
 			this.gameOver = true;
-			window.alert("you win");
+			$('#messageBox').text('你赢了!').css({
+				color: 'white',
+				'background-color': 'green'
+			});
 		}
 	}
 
@@ -198,3 +201,8 @@ MyGame.prototype.update = function () {
 		this._handleRightClick(this.id);
 	}
 };
+
+$('#new-game-button').click(function() {
+	var myGame = new MyGame();
+	gEngine.Core.initializeEngineCore('GLCanvas', myGame);
+});

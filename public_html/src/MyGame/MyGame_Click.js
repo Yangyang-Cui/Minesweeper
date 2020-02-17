@@ -51,7 +51,7 @@ MyGame.prototype._handleRightClick = function (id) {
 	if (!this.gameOver) {
 		let cell = this.board[id];
 		if (!cell.opened) {
-			console.log(this.minesRemaining);
+			// console.log(this.minesRemaining);
 			if (!cell.flagged && this.minesRemaining > 0) {
 				cell.flagged = true;
 				cell.flagImage.setVisibility(true);
@@ -72,5 +72,8 @@ MyGame.prototype._loss = function () {
 	this.mMineUnopenedSet = [];
 	this.mFlagSet = [];
 	this.mCamera.shake(-2, -2, 20, 30);
-	window.alert('you lose');
+	$('#messageBox').text('Game Over').css({
+		color: 'white',
+		'background-color': 'red'
+	});
 }
