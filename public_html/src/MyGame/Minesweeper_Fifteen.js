@@ -11,7 +11,7 @@
 
 "use strict"; // Operate in Strict mode such that variables must be declared before used!
 
-function MyGame() {
+function Minesweeper_Fifteen() {
 	this.kBgd = "assets/bgd.png";
 	this.mBgd = null;
 	this.mBgdSet = null;
@@ -56,12 +56,12 @@ function MyGame() {
 
 	this.boardSize = 10;
 	this.cellSize = 10;
-	this.mineCount = 5;
+	this.mineCount = 15;
 	this.minesRemaining = this.mineCount;
 
 	this.cell = null;
 }
-gEngine.Core.inheritPrototype(MyGame, Scene);
+gEngine.Core.inheritPrototype(Minesweeper_Fifteen, Scene);
 
 MyGame.prototype.loadScene = function () {
 	gEngine.Textures.loadTexture(this.kBgd);
@@ -169,7 +169,14 @@ MyGame.prototype.update = function () {
 
 	// testing the mouse input
 	if (gEngine.Input.isButtonPressed(gEngine.Input.mouseButton.Left)) {
-
+		$('#new-game-button').click(function() {
+			var myGame = new MyGame();
+			gEngine.Core.initializeEngineCore('GLCanvas', myGame);
+			$('#messageBox').text('10*10格子').css({
+				color: 'white',
+				'background-color': 'gray'
+			});
+		});
 	}
 
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
@@ -188,6 +195,8 @@ MyGame.prototype.update = function () {
 
 		if (isVictory) {
 			this.gameOver = true;
+			this.mMineUnopenedSet = [];
+			this.mFlagSet = [];
 			$('#messageBox').text('你赢了!').css({
 				color: 'white',
 				'background-color': 'green'
@@ -197,10 +206,6 @@ MyGame.prototype.update = function () {
 		$('#new-game-button').click(function() {
 			var myGame = new MyGame();
 			gEngine.Core.initializeEngineCore('GLCanvas', myGame);
-			$('#messageBox').text('10*10格子').css({
-				color: 'white',
-				'background-color': 'gray'
-			});
 		});
 	}
 
@@ -210,4 +215,5 @@ MyGame.prototype.update = function () {
 		this._handleRightClick(this.id);
 	}
 };
+
 
