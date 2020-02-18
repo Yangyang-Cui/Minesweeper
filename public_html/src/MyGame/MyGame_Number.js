@@ -51,4 +51,5 @@ MyGame.prototype._setGame = function (boardSize, mineCount) {
 	this.startPoint = this.boardSize / 2;
 	this.cameraPosition = [this.boardSize * this.boardSize / 2, this.boardSize * this.boardSize / 2];
 	this.cameraWidth = this.boardSize * this.boardSize;
+	console.log(this.defaultStart);
 }

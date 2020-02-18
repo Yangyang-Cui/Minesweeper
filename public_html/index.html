@@ -4,9 +4,10 @@
 <head>
 	<title>Minesweeper</title>
 	<link rel="icon" type="image/x-icon" href="./assets/favicon.png">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	<link rel="stylesheet" href="./style.css"> 
+	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<link rel="stylesheet" href="./style.css">
+
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
 		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
 	</script>
@@ -15,7 +16,7 @@
 	</script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-	</script>
+	</script> -->
 	<!-- the following says there are javascript source code contained in 
              the external source files
         -->
@@ -67,20 +68,22 @@
 
 	<!-- Client game code -->
 	<script type="text/javascript" src="src/MyGame/MyGame.js"></script>
-	<script type="text/javascript" src="src/MyGame/MyGame_Algorithm.js"></script>
-	<script type="text/javascript" src="src/MyGame/MyGame_Click.js"></script>
-	<script type="text/javascript" src="src/MyGame/MyGame_Number.js"></script>
+	<script type="text/javascript" src="src/MyGame/MyGame_LevelTwo.js"></script>
+	<script type="text/javascript" src="src/MyGame/MyGame_LevelThree.js"></script>
+	<!-- <script type="text/javascript" src="src/MyGame/MyGame_Algorithm.js"></script> -->
+	<!-- <script type="text/javascript" src="src/MyGame/MyGame_Click.js"></script> -->
+	<!-- <script type="text/javascript" src="src/MyGame/MyGame_Number.js"></script> -->
 	<!-- Objects -->
-	<script type="text/javascript" src="src/MyGame/Objects/DyePack.js"></script>
+	<!-- <script type="text/javascript" src="src/MyGame/Objects/DyePack.js"></script>
 	<script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
 	<script type="text/javascript" src="src/MyGame/Objects/Brain.js"></script>
-	<script type="text/javascript" src="src/MyGame/Objects/Minion.js"></script>
+	<script type="text/javascript" src="src/MyGame/Objects/Minion.js"></script> -->
 	<!-- ^_^ -->
 	<script type="text/javascript" src="src/MyGame/Objects/TextureObject.js"></script>
 </head>
 
 <body onload="
-        var myGame = new MyGame();
+        var myGame = new MyGame(10, 10);
         gEngine.Core.initializeEngineCore('GLCanvas', myGame);
 		 ">
 	<main>
@@ -105,8 +108,10 @@
 		<br>
 		<div class="controls">
 			<!-- <div class="user-display" id="time">0</div> -->
-			<button class="button" id="new-game-button">重新开始</button>&nbsp;
-			<button class="button" id="next-game-button">下一关卡</button>&nbsp;
+			<!-- <button class="button" id="new-game-button">重玩此关</button>&nbsp; -->
+			<button class="button" id="easy-game-button">简单</button>&nbsp;
+			<button class="button" id="normal-game-button">普通</button>&nbsp;
+			<button class="button" id="hard-game-button">困难</button>&nbsp;
 			<!-- <div class="user-display" id="mines-remaining">10</div> -->
 		</div>
 	</main>

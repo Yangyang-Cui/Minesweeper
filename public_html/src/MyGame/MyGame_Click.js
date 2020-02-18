@@ -45,8 +45,6 @@ MyGame.prototype._handleLeftClick = function (id) {
 	}
 }
 
-
-
 MyGame.prototype._handleRightClick = function (id) {
 	if (!this.gameOver) {
 		let cell = this.board[id];

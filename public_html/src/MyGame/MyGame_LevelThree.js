@@ -1,5 +1,5 @@
 /*
- * File: MyGame.js 
+ * File: LevelThree.js 
  * This is the logic of our game. 
  */
 
@@ -11,7 +11,7 @@
 
 "use strict"; // Operate in Strict mode such that variables must be declared before used!
 
-function MyGame(boardSize, mineCount) {
+function LevelThree(boardSize, mineCount) {
 	this.kBgd = "assets/bgd.png";
 	this.mBgd = null;
 	this.mBgdSet = null;
@@ -54,17 +54,16 @@ function MyGame(boardSize, mineCount) {
 	this.number = null;
 	this.numberMsg = null;
 
-	this.checkIsVictory = false;
 	this.cell = null;
 
 	this.cameraViewport = [0, 0, 640, 640];
 
+
+	// default setting game
 	this.defaultStart = 0;
 	this._setGame(boardSize, mineCount);
 
-
 	document.getElementById('easy-game-button').onclick = function () {
-		gEngine.GameLoop.stop();
 		var myGame = new MyGame(10, 10);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);
 		document.getElementById('messageBox').textContent = '10*10格子';
@@ -73,8 +72,7 @@ function MyGame(boardSize, mineCount) {
 	};
 
 	document.getElementById('normal-game-button').onclick = function () {
-		gEngine.GameLoop.stop();
-		var myGame = new MyGame(13, 20);
+		var myGame = new LevelTwo(13, 20);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);
 		document.getElementById('messageBox').textContent = '13*13格子';
 		document.getElementById('messageBox').style.color = 'white';
@@ -82,19 +80,16 @@ function MyGame(boardSize, mineCount) {
 	};
 
 	document.getElementById('hard-game-button').onclick = function () {
-		gEngine.GameLoop.stop();
-		var myGame = new MyGame(15, 30);
+		var myGame = new LevelThree(15, 30);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);;
 		document.getElementById('messageBox').textContent = '15*15格子';
 		document.getElementById('messageBox').style.color = 'white';
 		document.getElementById('messageBox').style.background = 'gray';
 	};
-
 }
+gEngine.Core.inheritPrototype(LevelThree, Scene);
 
-gEngine.Core.inheritPrototype(MyGame, Scene);
-
-MyGame.prototype.loadScene = function () {
+LevelThree.prototype.loadScene = function () {
 	gEngine.Textures.loadTexture(this.kBgd);
 	gEngine.Textures.loadTexture(this.kMineUnopened);
 	gEngine.Textures.loadTexture(this.kMineRed);
@@ -102,11 +97,11 @@ MyGame.prototype.loadScene = function () {
 	gEngine.Textures.loadTexture(this.kFlag);
 };
 
-MyGame.prototype.unloadScene = function () {
+LevelThree.prototype.unloadScene = function () {
 
 };
 
-MyGame.prototype.initialize = function () {
+LevelThree.prototype.initialize = function () {
 	// Step A: set up the cameras
 	this.mCamera = new Camera(
 		vec2.fromValues(this.cameraPosition[0], this.cameraPosition[1]), // position of the camera
@@ -139,7 +134,7 @@ MyGame.prototype.initialize = function () {
 };
 
 
-MyGame.prototype.drawCamera = function (camera) {
+LevelThree.prototype.drawCamera = function (camera) {
 	camera.setupViewProjection();
 	// Bgd
 	for (let i = 0; i < this.mBgdSet.length; i++) {
@@ -174,7 +169,7 @@ MyGame.prototype.drawCamera = function (camera) {
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-MyGame.prototype.draw = function () {
+LevelThree.prototype.draw = function () {
 	// Step A: clear the canvas
 	gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
@@ -184,9 +179,9 @@ MyGame.prototype.draw = function () {
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
-MyGame.prototype.update = function () {
+LevelThree.prototype.update = function () {
+
 	this.mCamera.update(); // for smoother camera movements
-	// *** didn't work
 
 	// Pan camera to object
 	if (gEngine.Input.isKeyClicked(gEngine.Input.keys.L)) {
@@ -205,7 +200,7 @@ MyGame.prototype.update = function () {
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
 		this._getClickedID();
 		this._handleLeftClick(this.id);
-		let isVictory = true
+		var isVictory = true;
 		var cells = Object.keys(this.board);
 		for (var i = 0; i < cells.length; i++) {
 			if (!this.board[cells[i]].mined) {
@@ -217,7 +212,6 @@ MyGame.prototype.update = function () {
 		}
 
 		if (isVictory) {
-			this.checkIsVictory = true;
 			this.gameOver = true;
 			document.getElementById('messageBox').textContent = '你赢了';
 			document.getElementById('messageBox').style.color = 'white';
@@ -226,6 +220,7 @@ MyGame.prototype.update = function () {
 			this.mFlagSet = [];
 		}
 	}
+
 
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Right)) {
 		this._getClickedID();
@@ -249,7 +244,7 @@ function Cell(x, y, opened, flagged, mined, neighborMineCount, mineUnopenedImage
 	};
 }
 
-MyGame.prototype._Board = function (boardSize, mineCount) {
+LevelThree.prototype._Board = function (boardSize, mineCount) {
 	this.board = {};
 	for (let x = this.startPoint; x < boardSize; x += this.cellSize) {
 		for (let y = this.startPoint; y < boardSize; y += this.cellSize) {
@@ -278,7 +273,7 @@ MyGame.prototype._Board = function (boardSize, mineCount) {
 	return this.board;
 };
 
-MyGame.prototype._randomlyAssignMines = function (mineCount) {
+LevelThree.prototype._randomlyAssignMines = function (mineCount) {
 	var mineCoordinates = [];
 
 	for (var i = 0; i < mineCount; i++) {
@@ -306,7 +301,7 @@ function getRandomInteger(min, max) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-MyGame.prototype._calculateNeighborMineCounts = function (boardSize) {
+LevelThree.prototype._calculateNeighborMineCounts = function (boardSize) {
 	var cell;
 	var neighborMineCount = 0;
 	for (let x = this.startPoint; x < boardSize; x += this.cellSize) {
@@ -337,7 +332,7 @@ function getXY(id) {
 	return [x, y];
 }
 
-MyGame.prototype._getNeighbors = function (id) {
+LevelThree.prototype._getNeighbors = function (id) {
 	// let x = getXY(id)[0];
 	// let y = getXY(id)[1];
 	let cell = this.board[id];
@@ -365,7 +360,7 @@ MyGame.prototype._getNeighbors = function (id) {
 	return trueNeighbors;
 }
 
-MyGame.prototype._isMined = function (id) {
+LevelThree.prototype._isMined = function (id) {
 	var cell = this.board[id];
 	var mined = 0;
 	if (typeof cell !== 'undefined') {
@@ -376,7 +371,7 @@ MyGame.prototype._isMined = function (id) {
 // -------------End Minesweeper Algorithm
 
 // **** Minesweeper Click
-MyGame.prototype._getClickedID = function () {
+LevelThree.prototype._getClickedID = function () {
 	if (this.mCamera.isMouseInViewport()) {
 		var x = this.mCamera.mouseWCX();
 		var y = this.mCamera.mouseWCY();
@@ -390,7 +385,7 @@ MyGame.prototype._getClickedID = function () {
 	}
 }
 
-MyGame.prototype._handleLeftClick = function (id) {
+LevelThree.prototype._handleLeftClick = function (id) {
 	if (!this.gameOver) {
 		let cell = this.board[id];
 		if (!cell.opened) {
@@ -425,7 +420,7 @@ MyGame.prototype._handleLeftClick = function (id) {
 
 
 
-MyGame.prototype._handleRightClick = function (id) {
+LevelThree.prototype._handleRightClick = function (id) {
 	if (!this.gameOver) {
 		let cell = this.board[id];
 		if (!cell.opened) {
@@ -444,7 +439,7 @@ MyGame.prototype._handleRightClick = function (id) {
 }
 
 
-MyGame.prototype._loss = function () {
+LevelThree.prototype._loss = function () {
 	this.gameOver = true;
 	this.mMineRed = new TextureObject(this.kMineRed, this.board[this.id].x, this.board[this.id].y, this.cellSize, this.cellSize);
 	this.mMineUnopenedSet = [];
@@ -457,7 +452,7 @@ MyGame.prototype._loss = function () {
 // ------------------ End Minesweeper Click
 
 // ****** Minesweeper number
-MyGame.prototype._getNumberColor = function (numberMsg) {
+LevelThree.prototype._getNumberColor = function (numberMsg) {
 	var color = 'black';
 	if (numberMsg === '1') {
 		this.mMsg.setColor([0.6, 0.3, 0.5, 1]);
@@ -477,7 +472,7 @@ MyGame.prototype._getNumberColor = function (numberMsg) {
 	return color;
 }
 
-MyGame.prototype._number = function () {
+LevelThree.prototype._number = function () {
 	let x = null;
 	let y = null;
 	for (let i = 0; i < this.mCheckPointStarSet.length; i++) {
@@ -501,7 +496,7 @@ MyGame.prototype._number = function () {
 	}
 }
 
-MyGame.prototype._setGame = function (boardSize, mineCount) {
+LevelThree.prototype._setGame = function (boardSize, mineCount) {
 	this.defaultStart += 1;
 	this.boardSize = boardSize;
 	this.cellSize = this.boardSize;
@@ -510,6 +505,6 @@ MyGame.prototype._setGame = function (boardSize, mineCount) {
 	this.startPoint = this.boardSize / 2;
 	this.cameraPosition = [this.boardSize * this.boardSize / 2, this.boardSize * this.boardSize / 2];
 	this.cameraWidth = this.boardSize * this.boardSize;
-	// console.log(this.defaultStart);
+	console.log(this.defaultStart);
 }
 // ---------- End Minesweeper number
