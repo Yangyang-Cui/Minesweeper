@@ -54,12 +54,43 @@ function MyGame() {
 	this.number = null;
 	this.numberMsg = null;
 
-	this.boardSize = 10;
-	this.cellSize = 10;
-	this.mineCount = 5;
-	this.minesRemaining = this.mineCount;
-
 	this.cell = null;
+//  ** Default 10 * 10
+	// this.boardSize = 10;
+	// this.cellSize = 10;
+	// this.mineCount = 5;
+	// this.startPoint = 5;
+	// this.minesRemaining = this.mineCount;
+	// this.cameraPosition = [50, 50];
+	// this.cameraWidth = 100;
+	this.cameraViewport = [0, 0, 640, 640];
+
+	// ** 13 * 13
+	// this.boardSize = 13;
+	// this.cellSize = this.boardSize;
+	// this.mineCount = 20;
+	// this.minesRemaining = this.mineCount;
+	// this.startPoint = this.boardSize / 2;
+	// this.cameraPosition = [this.boardSize * this.boardSize / 2, this.boardSize * this.boardSize / 2];
+	// this.cameraWidth = this.boardSize * this.boardSize;
+	// this.cameraViewport = [0, 0, 1024, 1024];
+
+	// ** 15 * 15
+	// this.boardSize = 15;
+	// this.cellSize = this.boardSize;
+	// this.mineCount = 30;
+	// this.minesRemaining = this.mineCount;
+	// this.startPoint = this.boardSize / 2;
+	// this.cameraPosition = [this.boardSize * this.boardSize / 2, this.boardSize * this.boardSize / 2];
+	// this.cameraWidth = this.boardSize * this.boardSize;
+
+	// default setting game
+	this.defaultStart = 0;
+	if (this.defaultStart === 0) {
+		this._setGame(10, 10);
+	} else if (this.defaultStart === 1) {
+		this._setGame(13, 20);
+	}
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -82,18 +113,18 @@ MyGame.prototype.unloadScene = function () {
 MyGame.prototype.initialize = function () {
 	// Step A: set up the cameras
 	this.mCamera = new Camera(
-		vec2.fromValues(50, 50), // position of the camera
-		100, // width of camera
-		[0, 0, 640, 640] // viewport (orgX, orgY, width, height)
+		vec2.fromValues(this.cameraPosition[0], this.cameraPosition[1]), // position of the camera
+		this.cameraWidth, // width of camera
+		this.cameraViewport // viewport (orgX, orgY, width, height)
 	);
 	this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
 	this.mBgdSet = [];
 
-	this.mMsg = new FontRenderable("Status Message");
-	this.mMsg.setColor([0, 0, 0, 1]);
-	this.mMsg.getXform().setPosition(20, 40);
-	this.mMsg.setTextHeight(5);
+	// this.mMsg = new FontRenderable("Status Message");
+	// this.mMsg.setColor([0, 0, 0, 1]);
+	// this.mMsg.getXform().setPosition(20, 40);
+	// this.mMsg.setTextHeight(5);
 
 	this.mBgdSet = [];
 	this.mMineUnopenedSet = [];
@@ -106,6 +137,8 @@ MyGame.prototype.initialize = function () {
 	this.powerBoardSize = this.boardSize * this.boardSize;
 	this._Board(this.powerBoardSize, this.mineCount);
 	this._number();
+	// console.log(this.board);
+	// console.log(this.mMsgSet);
 };
 
 
@@ -115,7 +148,7 @@ MyGame.prototype.drawCamera = function (camera) {
 	for (let i = 0; i < this.mBgdSet.length; i++) {
 		this.mBgdSet[i].draw(camera);
 	}
-	// number
+	// Mine neighbor number
 	for (let i = 0; i < this.mMsgSet.length; i++) {
 		this.mMsgSet[i].draw(camera);
 	}
@@ -192,15 +225,24 @@ MyGame.prototype.update = function () {
 				color: 'white',
 				'background-color': 'green'
 			});
+			this.mMineUnopenedSet = [];
+			this.mFlagSet = [];
 		}
 
 		$('#new-game-button').click(function() {
-			var myGame = new MyGame();
-			gEngine.Core.initializeEngineCore('GLCanvas', myGame);
-			$('#messageBox').text('10*10格子').css({
-				color: 'white',
-				'background-color': 'gray'
-			});
+			// var myGame = new MyGame();
+			// gEngine.Core.initializeEngineCore('GLCanvas', myGame);
+			// $('#messageBox').text('10*10格子').css({
+			// 	color: 'white',
+			// 	'background-color': 'gray'
+			// });
+			location.reload();
+		});
+
+		// *** didn't work
+		$('#next-game-button').click(function() {
+			location.reload();
+			this._setGame(13, 20)
 		});
 	}
 

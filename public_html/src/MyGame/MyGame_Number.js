@@ -1,7 +1,7 @@
 MyGame.prototype._getNumberColor = function (numberMsg) {
 	var color = 'black';
 	if (numberMsg === '1') {
-		this.mMsg.setColor([0, 1.0, 1.0, 1]);
+		this.mMsg.setColor([0.6, 0.3, 0.5, 1]);
 	} else if (numberMsg === '2') {
 		this.mMsg.setColor([0.2, 1.0, 0.2, 1]);
 	} else if (numberMsg === '3') {
@@ -28,6 +28,9 @@ MyGame.prototype._number = function () {
 		} else {
 			this.numberMsg = '';
 		}
+	// console.log(this.number);
+
+		// this.numberMsg = '1';
 		this.mMsg = new FontRenderable(this.numberMsg);
 		this._getNumberColor(this.numberMsg);
 		x = this.board[this.mCheckPointStarSet[i]].x;
@@ -39,33 +42,13 @@ MyGame.prototype._number = function () {
 	}
 }
 
-MyGame.prototype._checkNeighborZero = function (cell, id) {
-	if (cell.neighborMineCount === 0) {
-		let neighbors = this._getNeighbors(id);
-		for (var i = 0; i < neighbors.length; i++) {
-			let newId = neighbors[i];
-			let newCell = this.board[newId];
-			if (!newCell.opened) {
-				newCell.opened = true;
-				newCell.mineUnopenedImage.setVisibility(false);
-			}
-			// if (newCell.neighborMineCount !== 0) {
-			// 	return;
-			// } else {
-			// 	this._checkNeighborZero(newCell, newId);
-			// }
-	// 		let cellNeighbor = this.board[neighbors[i]];
-	// 		cellNeighbor.opened = true;
-	// 		cellNeighbor.mineUnopenedImage.setVisibility(false);
-	// 		if (cellNeighbor.neighborMineCount === 0) {
-	// 			neighbors = this._getNeighbors(cellNeighbor);
-	// 			for (var j = 0; j < neighbors.length; j++) {
-	// 				cellNeighbor = this.board[neighbors[j]];
-	// 				cellNeighbor.opened = true;
-	// 				cellNeighbor.mineUnopenedImage.setVisibility(false);
-	// 			}
-	// 			// this._checkNeighborZero(cellNeighbor, neighbors[i]);
-	// 		}
-		}
-	}
+MyGame.prototype._setGame = function (boardSize, mineCount) {
+	this.defaultStart += 1;
+	this.boardSize = boardSize;
+	this.cellSize = this.boardSize;
+	this.mineCount = mineCount;
+	this.minesRemaining = this.mineCount;
+	this.startPoint = this.boardSize / 2;
+	this.cameraPosition = [this.boardSize * this.boardSize / 2, this.boardSize * this.boardSize / 2];
+	this.cameraWidth = this.boardSize * this.boardSize;
 }

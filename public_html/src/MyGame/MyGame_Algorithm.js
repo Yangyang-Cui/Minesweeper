@@ -15,8 +15,8 @@ function Cell(x, y, opened, flagged, mined, neighborMineCount, mineUnopenedImage
 
 MyGame.prototype._Board = function (boardSize, mineCount) {
 	this.board = {};
-	for (let x = 5; x < boardSize; x += this.cellSize) {
-		for (let y = 5; y < boardSize; y += this.cellSize) {
+	for (let x = this.startPoint; x < boardSize; x += this.cellSize) {
+		for (let y = this.startPoint; y < boardSize; y += this.cellSize) {
 			this.mMineUnopened = new TextureObject(this.kMineUnopened, x, y, this.cellSize, this.cellSize);
 			this.mMineGray = null;
 			this.mFlag = new TextureObject(this.kFlag, x, y, this.cellSize, this.cellSize);
@@ -73,8 +73,8 @@ function getRandomInteger(min, max) {
 MyGame.prototype._calculateNeighborMineCounts = function (boardSize) {
 	var cell;
 	var neighborMineCount = 0;
-	for (let x = 5; x < boardSize; x += 10) {
-		for (let y = 5; y < boardSize; y += 10) {
+	for (let x = this.startPoint; x < boardSize; x += this.cellSize) {
+		for (let y = this.startPoint; y < boardSize; y += this.cellSize) {
 			var id = x + '*' + y;
 			cell = this.board[id];
 			if (!cell.mined) {
@@ -111,14 +111,14 @@ MyGame.prototype._getNeighbors = function (id) {
 	var neighbors = [];
 	var trueNeighbors = []
 
-	neighbors.push((x - 10) + "*" + (y - 10));
-	neighbors.push((x - 10) + "*" + y);
-	neighbors.push((x - 10) + "*" + (y + 10));
-	neighbors.push(x + "*" + (y - 10));
-	neighbors.push(x + "*" + (y + 10));
-	neighbors.push((x + 10) + "*" + (y - 10));
-	neighbors.push((x + 10) + "*" + y);
-	neighbors.push((x + 10) + "*" + (y + 10));
+	neighbors.push((x - this.cellSize) + "*" + (y - this.cellSize));
+	neighbors.push((x - this.cellSize) + "*" + y);
+	neighbors.push((x - this.cellSize) + "*" + (y + this.cellSize));
+	neighbors.push(x + "*" + (y - this.cellSize));
+	neighbors.push(x + "*" + (y + this.cellSize));
+	neighbors.push((x + this.cellSize) + "*" + (y - this.cellSize));
+	neighbors.push((x + this.cellSize) + "*" + y);
+	neighbors.push((x + this.cellSize) + "*" + (y + this.cellSize));
 
 	for (var i = 0; i < neighbors.length; i++) {
 		if (this.mCheckPointStarSet.indexOf(neighbors[i]) >= 0) {

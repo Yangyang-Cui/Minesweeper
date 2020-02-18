@@ -36,9 +36,9 @@ MyGame.prototype._handleLeftClick = function (id) {
 							}
 						}
 					}
-					if (this.minesRemaining === 0) {
-						window.alert('you win');
-					}
+					// if (this.minesRemaining === 0) {
+					// 	window.alert('you win');
+					// }
 				}
 			}
 		}
@@ -71,7 +71,7 @@ MyGame.prototype._loss = function () {
 	this.mMineRed = new TextureObject(this.kMineRed, this.board[this.id].x, this.board[this.id].y, this.cellSize, this.cellSize);
 	this.mMineUnopenedSet = [];
 	this.mFlagSet = [];
-	this.mCamera.shake(-2, -2, 20, 30);
+	this.mCamera.shake(-2, -2, 20, 50);
 	$('#messageBox').text('Game Over').css({
 		color: 'white',
 		'background-color': 'red'
