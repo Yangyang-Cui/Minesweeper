@@ -69,7 +69,7 @@ function MyGame(boardSize, mineCount) {
 
 	document.getElementById('easy-game-button').onclick = function () {
 		gEngine.GameLoop.stop();
-		location.reload();
+		// location.reload();
 		var myGame = new MyGame(10, 10);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);
 		document.getElementById('messageBox').textContent = '简单：10*10格子， 10个雷';
