@@ -12,6 +12,10 @@
 "use strict"; // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame(boardSize, mineCount) {
+	this.clickSound = "assets/sounds/click.mp3";
+	this.failSound = "assets/sounds/fail.mp3"
+	this.successSound = "assets/sounds/success.wav"
+	
 	this.kBgd = "assets/bgd.png";
 	this.mBgd = null;
 	this.mBgdSet = null;
@@ -67,7 +71,7 @@ function MyGame(boardSize, mineCount) {
 		gEngine.GameLoop.stop();
 		var myGame = new MyGame(10, 10);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);
-		document.getElementById('messageBox').textContent = '10*10格子';
+		document.getElementById('messageBox').textContent = '简单：10*10格子， 10个雷';
 		document.getElementById('messageBox').style.color = 'white';
 		document.getElementById('messageBox').style.background = 'gray';
 	};
@@ -76,7 +80,7 @@ function MyGame(boardSize, mineCount) {
 		gEngine.GameLoop.stop();
 		var myGame = new MyGame(13, 20);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);
-		document.getElementById('messageBox').textContent = '13*13格子';
+		document.getElementById('messageBox').textContent = '普通：13*13格子，20个雷';
 		document.getElementById('messageBox').style.color = 'white';
 		document.getElementById('messageBox').style.background = 'gray';
 	};
@@ -85,16 +89,20 @@ function MyGame(boardSize, mineCount) {
 		gEngine.GameLoop.stop();
 		var myGame = new MyGame(15, 30);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);;
-		document.getElementById('messageBox').textContent = '15*15格子';
+		document.getElementById('messageBox').textContent = '困难：15*15格子，30个雷';
 		document.getElementById('messageBox').style.color = 'white';
 		document.getElementById('messageBox').style.background = 'gray';
 	};
-
 }
 
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
+	// load sound effect
+	gEngine.AudioClips.loadAudio(this.clickSound);
+	gEngine.AudioClips.loadAudio(this.failSound);
+	gEngine.AudioClips.loadAudio(this.successSound);
+	// load image
 	gEngine.Textures.loadTexture(this.kBgd);
 	gEngine.Textures.loadTexture(this.kMineUnopened);
 	gEngine.Textures.loadTexture(this.kMineRed);
@@ -103,7 +111,17 @@ MyGame.prototype.loadScene = function () {
 };
 
 MyGame.prototype.unloadScene = function () {
-
+	// load sound effect
+	gEngine.AudioClips.unloadAudio(this.clickSound);
+	gEngine.AudioClips.unloadAudio(this.failSound);
+	gEngine.AudioClips.unloadAudio(this.successSound);
+	// load image
+	gEngine.Textures.unloadTexture(this.kBgd);
+	gEngine.Textures.unloadTexture(this.kMineUnopened);
+	gEngine.Textures.unloadTexture(this.kMineRed);
+	gEngine.Textures.unloadTexture(this.kMineGray);
+	gEngine.Textures.unloadTexture(this.kFlag);
+	// console.log("unload");
 };
 
 MyGame.prototype.initialize = function () {
@@ -203,6 +221,7 @@ MyGame.prototype.update = function () {
 	}
 
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
+		gEngine.AudioClips.playACue(this.clickSound);
 		this._getClickedID();
 		this._handleLeftClick(this.id);
 		let isVictory = true
@@ -217,6 +236,7 @@ MyGame.prototype.update = function () {
 		}
 
 		if (isVictory) {
+		gEngine.AudioClips.playACue(this.successSound);
 			this.checkIsVictory = true;
 			this.gameOver = true;
 			document.getElementById('messageBox').textContent = '你赢了';
@@ -228,6 +248,7 @@ MyGame.prototype.update = function () {
 	}
 
 	if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Right)) {
+		gEngine.AudioClips.playACue(this.clickSound);
 		this._getClickedID();
 		this._handleRightClick(this.id);
 	}
@@ -450,6 +471,8 @@ MyGame.prototype._loss = function () {
 	this.mMineUnopenedSet = [];
 	this.mFlagSet = [];
 	this.mCamera.shake(-2, -2, 20, 50);
+	gEngine.AudioClips.playACue(this.failSound);
+	
 	document.getElementById('messageBox').textContent = 'Game Over';
 	document.getElementById('messageBox').style.color = 'white';
 	document.getElementById('messageBox').style.background = 'red';
