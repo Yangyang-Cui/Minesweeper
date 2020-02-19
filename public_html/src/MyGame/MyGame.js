@@ -69,6 +69,7 @@ function MyGame(boardSize, mineCount) {
 
 	document.getElementById('easy-game-button').onclick = function () {
 		gEngine.GameLoop.stop();
+		location.reload();
 		var myGame = new MyGame(10, 10);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);
 		document.getElementById('messageBox').textContent = '简单：10*10格子， 10个雷';
@@ -78,6 +79,7 @@ function MyGame(boardSize, mineCount) {
 
 	document.getElementById('normal-game-button').onclick = function () {
 		gEngine.GameLoop.stop();
+		// location.reload();
 		var myGame = new MyGame(13, 20);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);
 		document.getElementById('messageBox').textContent = '普通：13*13格子，20个雷';
@@ -87,6 +89,7 @@ function MyGame(boardSize, mineCount) {
 
 	document.getElementById('hard-game-button').onclick = function () {
 		gEngine.GameLoop.stop();
+		// location.reload();
 		var myGame = new MyGame(15, 30);
 		gEngine.Core.initializeEngineCore('GLCanvas', myGame);;
 		document.getElementById('messageBox').textContent = '困难：15*15格子，30个雷';
@@ -476,6 +479,7 @@ MyGame.prototype._loss = function () {
 	document.getElementById('messageBox').textContent = 'Game Over';
 	document.getElementById('messageBox').style.color = 'white';
 	document.getElementById('messageBox').style.background = 'red';
+	// setTimeout(location.reload(), 3000);
 }
 // ------------------ End Minesweeper Click
 
